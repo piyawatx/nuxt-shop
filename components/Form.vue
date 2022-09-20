@@ -22,23 +22,23 @@
         </div>
         <div class="mb-3">
           <label for="imageUrl" class="form-label">Image URL</label>
-          <!-- <input
+          <input
             type="text"
             class="form-control"
             id="imageUrl"
             v-model="product.imageUrl"
-          /> -->
-          <input
+          />
+          <!-- <input
             class="form-control"
             type="file"
             id="formFile"
             @change="onFileSelected"
             ref="myFileInput"
-          />
+          /> -->
         </div>
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <img :src="product.imageUrl" v-if="product.imageUrl" />
-        </div>
+        </div> -->
         <button type="submit" class="btn btn-primary">Save</button>
       </form>
     </div>
