@@ -8,7 +8,7 @@
             type="text"
             class="form-control"
             id="title"
-            v-model="product.title"
+            v-model.trim="product.title"
           />
         </div>
         <div class="mb-3">
