@@ -17,11 +17,21 @@
           <li class="nav-item">
             <NuxtLink to="/" class="nav-link">Home</NuxtLink>
           </li>
-          <li class="nav-item">
-            <NuxtLink to="/products" class="nav-link">Products</NuxtLink>
-          </li>
-          <li class="nav-item">
-            <NuxtLink to="/form" class="nav-link">Form</NuxtLink>
+          
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdownMenuLink"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >Admin
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><NuxtLink to="/admin/form" class="dropdown-item">Form</NuxtLink></li>
+              <li><NuxtLink to="/admin/products" class="dropdown-item">Products</NuxtLink></li>
+            </ul>
           </li>
         </ul>
       </div>
