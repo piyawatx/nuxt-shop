@@ -80,12 +80,13 @@ export default {
     validate() {
       if (!this.product.title) {
         return false
-      }
-      if (!this.product.price) {
+      }else  if (!this.product.price) {
         return false
       }
-      if (!this.product.imageUrl) {
+      else if(!this.product.imageUrl) {
         return false
+      }else{
+        return true
       }
     },
     onFileSelected(event) {
