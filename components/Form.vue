@@ -53,12 +53,14 @@ export default {
         price: '',
         imageUrl: null,
       },
+      file: null,
     }
   },
   methods: {
-    saveData() {
+    async saveData() {
       if (this.validate()) {
-        axios
+        await this.onUpload()
+        await axios
           .post(
             'https://nuxt-demo-6feb2-default-rtdb.asia-southeast1.firebasedatabase.app/products.json',
             this.product
@@ -68,8 +70,8 @@ export default {
             this.resetForm()
             this.$router.push('/')
           })
-      }else{
-        alert("ข้อมูลไม่ครบ")
+      } else {
+        alert('ข้อมูลไม่ครบ')
       }
     },
     resetForm() {
@@ -80,44 +82,44 @@ export default {
     validate() {
       if (!this.product.title) {
         return false
-      }else  if (!this.product.price) {
+      } else if (!this.product.price) {
         return false
-      }
-      else if(!this.product.imageUrl) {
+      } else if (!this.product.imageUrl) {
         return false
-      }else{
+      } else {
         return true
       }
     },
     onFileSelected(event) {
       if (event.target.files[0]) {
-        let file = event.target.files[0]
-        this.product.imageUrl = URL.createObjectURL(file) // preview image
-
-        const firebaseConfig = {
-          apiKey: 'AIzaSyBHAu-Tdww-tuQ4wwkxOvyJ_O-mNqlBgQc',
-          authDomain: 'nuxt-demo-6feb2.firebaseapp.com',
-          databaseURL:
-            'https://nuxt-demo-6feb2-default-rtdb.asia-southeast1.firebasedatabase.app',
-          projectId: 'nuxt-demo-6feb2',
-          storageBucket: 'nuxt-demo-6feb2.appspot.com',
-          messagingSenderId: '493057169770',
-          appId: '1:493057169770:web:53f650d42fc5241a7ded13',
-        }
-
-        const app = initializeApp(firebaseConfig, 'nuxt-shop')
-        const storage = getStorage(app)
-
-        const imageRef = ref(storage, 'img' + file.lastModified)
-        uploadBytes(imageRef, file).then((res) => {
-          let imageName = res.metadata.name
-          getDownloadURL(ref(storage, imageName)).then((url) => {
-            this.product.imageUrl = url
-          })
-        })
+        this.file = event.target.files[0]
+        this.product.imageUrl = URL.createObjectURL(this.file) // preview image
       } else {
         this.product.imageUrl = null
       }
+    },
+    onUpload() {
+      const firebaseConfig = {
+        apiKey: 'AIzaSyBHAu-Tdww-tuQ4wwkxOvyJ_O-mNqlBgQc',
+        authDomain: 'nuxt-demo-6feb2.firebaseapp.com',
+        databaseURL:
+          'https://nuxt-demo-6feb2-default-rtdb.asia-southeast1.firebasedatabase.app',
+        projectId: 'nuxt-demo-6feb2',
+        storageBucket: 'nuxt-demo-6feb2.appspot.com',
+        messagingSenderId: '493057169770',
+        appId: '1:493057169770:web:53f650d42fc5241a7ded13',
+      }
+
+      const app = initializeApp(firebaseConfig, 'nuxt-shop')
+      const storage = getStorage(app)
+
+      const imageRef = ref(storage, 'img' + this.file.lastModified)
+      uploadBytes(imageRef, this.file).then((res) => {
+        let imageName = res.metadata.name
+        getDownloadURL(ref(storage, imageName)).then((url) => {
+          this.product.imageUrl = url
+        })
+      })
     },
   },
 }
