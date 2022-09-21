@@ -21,7 +21,7 @@
           />
         </div>
         <div class="mb-3">
-          <label for="imageUrl" class="form-label">Image URL</label>
+          <label for="imageUrl" class="form-label">Image</label>
           <input
             class="form-control"
             type="file"
