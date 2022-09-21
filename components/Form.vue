@@ -57,17 +57,20 @@ export default {
   },
   methods: {
     saveData() {
-      this.validate()
-      axios
-        .post(
-          'https://nuxt-demo-6feb2-default-rtdb.asia-southeast1.firebasedatabase.app/products.json',
-          this.product
-        )
-        .then((res) => {
-          console.log(res)
-          this.resetForm()
-          this.$router.push('/')
-        })
+      if (this.validate()) {
+        axios
+          .post(
+            'https://nuxt-demo-6feb2-default-rtdb.asia-southeast1.firebasedatabase.app/products.json',
+            this.product
+          )
+          .then((res) => {
+            console.log(res)
+            this.resetForm()
+            this.$router.push('/')
+          })
+      }else{
+        alert("ข้อมูลไม่ครบ")
+      }
     },
     resetForm() {
       this.product.title = null
@@ -75,8 +78,14 @@ export default {
       this.product.imageUrl = null
     },
     validate() {
+      if (!this.product.title) {
+        return false
+      }
       if (!this.product.price) {
-        this.product.price = 0
+        return false
+      }
+      if (!this.product.imageUrl) {
+        return false
       }
     },
     onFileSelected(event) {
