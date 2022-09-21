@@ -59,7 +59,6 @@ export default {
   methods: {
     async saveData() {
       if (this.validate()) {
-        await this.onUpload()
         await axios
           .post(
             'https://nuxt-demo-6feb2-default-rtdb.asia-southeast1.firebasedatabase.app/products.json',
@@ -94,6 +93,7 @@ export default {
       if (event.target.files[0]) {
         this.file = event.target.files[0]
         this.product.imageUrl = URL.createObjectURL(this.file) // preview image
+        this.onUpload()
       } else {
         this.product.imageUrl = null
       }
@@ -118,6 +118,7 @@ export default {
         let imageName = res.metadata.name
         getDownloadURL(ref(storage, imageName)).then((url) => {
           this.product.imageUrl = url
+          console.log(url);
         })
       })
     },
