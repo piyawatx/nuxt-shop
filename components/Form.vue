@@ -48,14 +48,15 @@ export default {
   data() {
     return {
       product: {
-        title: "",
-        price: "",
+        title: '',
+        price: '',
         imageUrl: null,
       },
     }
   },
   methods: {
     saveData() {
+      this.validate()
       axios
         .post(
           'https://nuxt-demo-6feb2-default-rtdb.asia-southeast1.firebasedatabase.app/products.json',
@@ -71,6 +72,11 @@ export default {
       this.product.title = null
       this.product.price = null
       this.product.imageUrl = null
+    },
+    validate() {
+      if (!this.product.price) {
+        this.product.price = 0
+      }
     },
     onFileSelected(event) {
       if (event.target.files[0]) {
