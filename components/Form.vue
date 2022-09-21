@@ -28,6 +28,7 @@
             id="formFile"
             @change="onFileSelected"
             ref="myFileInput"
+            accept="image/*"
           />
         </div>
         <div class="mb-3">
