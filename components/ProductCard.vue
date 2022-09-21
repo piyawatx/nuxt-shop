@@ -4,7 +4,7 @@
       <img :src="imageUrl" class="card-img-top" />
       <div class="card-body p-2">
         <p class="card-text m-0">
-          {{ title }}
+          {{ title.substring(0,25)}}
         </p>
         <p class="fs-5 m-0">฿ {{ price.toLocaleString() }}</p>
       </div>
