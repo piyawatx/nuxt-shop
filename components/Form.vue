@@ -42,8 +42,21 @@
 
 <script>
 import axios from 'axios'
+
 import { initializeApp } from 'firebase/app'
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+const firebaseConfig = {
+  apiKey: 'AIzaSyBHAu-Tdww-tuQ4wwkxOvyJ_O-mNqlBgQc',
+  authDomain: 'nuxt-demo-6feb2.firebaseapp.com',
+  databaseURL:
+    'https://nuxt-demo-6feb2-default-rtdb.asia-southeast1.firebasedatabase.app',
+  projectId: 'nuxt-demo-6feb2',
+  storageBucket: 'nuxt-demo-6feb2.appspot.com',
+  messagingSenderId: '493057169770',
+  appId: '1:493057169770:web:53f650d42fc5241a7ded13',
+}
+const app = initializeApp(firebaseConfig, 'nuxt-shop')
+const storage = getStorage(app)
 
 export default {
   data() {
@@ -54,21 +67,17 @@ export default {
         imageUrl: null,
       },
       file: null,
+      newImageName: null,
     }
   },
   methods: {
     async saveData() {
       if (this.validate()) {
-        await axios
-          .post(
-            'https://nuxt-demo-6feb2-default-rtdb.asia-southeast1.firebasedatabase.app/products.json',
-            this.product
-          )
-          .then((res) => {
-            console.log(res)
-            this.resetForm()
-            this.$router.push('/')
-          })
+        await this.uploadImage()
+        await this.getImageUrl()
+        await this.createProduct()
+        this.resetForm()
+        this.$router.push('/')
       } else {
         alert('ข้อมูลไม่ครบ')
       }
@@ -93,34 +102,32 @@ export default {
       if (event.target.files[0]) {
         this.file = event.target.files[0]
         this.product.imageUrl = URL.createObjectURL(this.file) // preview image
-        this.onUpload()
       } else {
         this.product.imageUrl = null
       }
     },
-    onUpload() {
-      const firebaseConfig = {
-        apiKey: 'AIzaSyBHAu-Tdww-tuQ4wwkxOvyJ_O-mNqlBgQc',
-        authDomain: 'nuxt-demo-6feb2.firebaseapp.com',
-        databaseURL:
-          'https://nuxt-demo-6feb2-default-rtdb.asia-southeast1.firebasedatabase.app',
-        projectId: 'nuxt-demo-6feb2',
-        storageBucket: 'nuxt-demo-6feb2.appspot.com',
-        messagingSenderId: '493057169770',
-        appId: '1:493057169770:web:53f650d42fc5241a7ded13',
-      }
-
-      const app = initializeApp(firebaseConfig, 'nuxt-shop')
-      const storage = getStorage(app)
-
+    async uploadImage() {
       const imageRef = ref(storage, 'img' + this.file.lastModified)
-      uploadBytes(imageRef, this.file).then((res) => {
-        let imageName = res.metadata.name
-        getDownloadURL(ref(storage, imageName)).then((url) => {
-          this.product.imageUrl = url
-          console.log(url);
-        })
+      await uploadBytes(imageRef, this.file).then((res) => {
+        this.newImageName = res.metadata.name
       })
+    },
+    async getImageUrl() {
+      // console.log("newImage name ",this.newImageName);
+      await getDownloadURL(ref(storage, this.newImageName)).then((url) => {
+        this.product.imageUrl = url
+        // console.log(url)
+      })
+    },
+    async createProduct() {
+      await axios
+        .post(
+          'https://nuxt-demo-6feb2-default-rtdb.asia-southeast1.firebasedatabase.app/products.json',
+          this.product
+        )
+        .then((res) => {
+          console.log(res)
+        })
     },
   },
 }
