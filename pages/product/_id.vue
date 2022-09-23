@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="card mt-3">
+    <div class="card mt-3 shadow-sm">
       <div class="card-body">
         <div class="row">
           <div class="col-4"><img :src="product.imageUrl" alt="" /></div>

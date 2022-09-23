@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card shadow-sm">
     <div class="card-body">
       <form @submit.prevent="saveData">
         <div class="mb-3">

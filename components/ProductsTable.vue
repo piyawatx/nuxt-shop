@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card">
+    <div class="card shadow-sm">
       <div class="card-body p-0">
         <div class="table-responsive">
           <table class="table table-hover table-borderless table-striped m-0 align-middle">

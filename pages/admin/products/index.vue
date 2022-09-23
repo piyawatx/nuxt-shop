@@ -1,8 +1,7 @@
 <template>
   <div class="container">
     <h2>Products</h2>
-    <!-- <ProductsDisplay /> -->
-    <products-table/>
+    <ProductsTable />
   </div>
 </template>
 <script>

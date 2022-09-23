@@ -1,6 +1,6 @@
 <template>
   <div @click="onclick">
-    <div class="card">
+    <div class="card shadow-sm">
       <img :src="imageUrl" class="card-img-top" />
       <div class="card-body p-2">
         <p class="card-text m-0">
