@@ -42,6 +42,7 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 import { initializeApp } from 'firebase/app'
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
@@ -127,6 +128,12 @@ export default {
         )
         .then((res) => {
           console.log(res)
+          Swal.fire({
+            icon: 'success',
+            title: 'Saved',
+            showConfirmButton: false,
+            timer: 1500,
+          })
         })
     },
   },

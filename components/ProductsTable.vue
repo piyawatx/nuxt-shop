@@ -1,5 +1,11 @@
 <template>
   <div>
+    <h2>Products</h2>
+    <div class="d-flex justify-content-end mb-3">
+      <button type="button" class="btn btn-danger me-2">Delete</button>
+      <button type="button" class="btn btn-success">Add New Product</button>
+    </div>
+
     <div class="card card-body shadow-sm p-0">
       <div class="table-responsive">
         <table
@@ -20,8 +26,10 @@
                 />
               </th>
               <th scope="col" style="min-width: 300px">Title</th>
-              <th scope="col" style="width: 200px;min-width: 100px">Price</th>
-              <th scope="col" style="width: 130px;min-width: 120px;">Actions</th>
+              <th scope="col" style="width: 200px; min-width: 100px">Price</th>
+              <th scope="col" style="width: 130px; min-width: 120px">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -52,7 +60,7 @@
                 <button
                   type="button"
                   class="btn btn-danger btn-sm"
-                  @click="deleteProduct(item.id)"
+                  @click="confirmDelete(item.id)"
                 >
                   Delete
                 </button>
@@ -105,7 +113,12 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="save">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              @click="save"
+            >
               Save
             </button>
             <button
@@ -124,6 +137,7 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2'
 export default {
   created() {
     this.$store.dispatch('fetchProducts')
@@ -168,6 +182,12 @@ export default {
           newProduct
         )
         .then((res) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Saved',
+            showConfirmButton: false,
+            timer: 1500,
+          })
           this.$store.dispatch('fetchProducts')
         })
     },
@@ -176,6 +196,20 @@ export default {
       this.formProduct.title = product.title
       this.formProduct.price = product.price
       this.formProduct.imageUrl = product.imageUrl
+    },
+    confirmDelete(id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Delete',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteProduct(id)
+        }
+      })
     },
     async deleteProduct(id) {
       await axios
@@ -186,6 +220,12 @@ export default {
         )
         .then((res) => {
           this.$store.dispatch('fetchProducts')
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            showConfirmButton: false,
+            timer: 1500,
+          })
         })
     },
   },
@@ -198,7 +238,7 @@ img {
   width: 30px;
   object-fit: cover;
 }
-.modal-image{
+.modal-image {
   aspect-ratio: 1 / 1;
   width: 250px;
   object-fit: cover;
