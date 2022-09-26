@@ -77,7 +77,7 @@ export default {
         await this.getImageUrl()
         await this.createProduct()
         this.resetForm()
-        this.$router.push('/')
+        this.$router.push('/admin/products')
       } else {
         alert('ข้อมูลไม่ครบ')
       }
